@@ -15,11 +15,10 @@ end
 class ActionController::Base
   class << self 
     def process_with_destroyer(request, response)
-      max = 5
-      (1..max).each do |attempt|
+      (1..retry_attempts).each do |attempt|
         begin
           request.attempt = attempt
-          request.last_attempt = attempt == max
+          request.last_attempt = attempt == retry_attempts
           
           return process_without_destroyer(request, response)
         rescue ActiveRecord::StaleObjectError => err
@@ -29,7 +28,13 @@ class ActionController::Base
     end
   
    alias_method_chain :process, :destroyer
+
+   # TODO: evaluate possibility of moving this to an instnace method
+   def retry_attempts
+     1
+   end
  end
+ 
 end
 
 class ActiveRecord::Base
