@@ -31,3 +31,17 @@ class ActionController::Base
    alias_method_chain :process, :destroyer
  end
 end
+
+class ActiveRecord::Base
+  define_callbacks :after_stale_object_error
+  
+  def update_with_destroyer(*args)
+    begin
+      update_without_destroyer(*args)
+    rescue ActiveRecord::StaleObjectError => err
+      run_callbacks(:after_stale_object_error)
+      raise err
+    end
+  end
+  alias_method_chain :update, :destroyer
+end
