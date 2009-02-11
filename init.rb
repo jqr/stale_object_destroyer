@@ -1,0 +1,1 @@
+require 'stale_object_destroyer'

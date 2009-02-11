@@ -1,0 +1,7 @@
+CHANGELOG
+init.rb
+lib/stale_object_destroyer.rb
+Manifest
+Rakefile
+README.rdoc
+spec/spec_helper.rb

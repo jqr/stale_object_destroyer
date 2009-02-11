@@ -1,0 +1,55 @@
+= Stale Object Destroyer
+
+An easy way to handle stale object errors in Rails by retrying the entire request.
+
+If you're using optimistic locking your ActiveRecord models you've probably run across the ActiveRecord::StaleObjectError. It is raised when a race condition is detected.
+
+So how do you handle ActiveRecord::StaleObjectError? Rails documentation has this to say.
+
+  You're then responsible for dealing with the conflict by rescuing the 
+  exception and either rolling back, merging, or otherwise apply the business 
+  logic needed to resolve the conflict. 
+
+In most applications, you simply need to retry the thing that failed and make sure you don't use any stale values when trying again. That last bit can prove rather tricky with the numerous caching techniques employed in high performance Rails applications.
+
+Stale Object Destroyer provides an easy way for you to start the entire request over to ensure no stale objects will be operated on. It handles this entirely inside of Rails though, so no additional client requests will be made. As far as your code will know, the user just retried the request a few times in hopes of success.
+
+
+== Examples
+
+Stale Object Destroyer works by handling StaleObjectErrors at a much higher level in the request cycle so you will need to let them pass through your exception notification code.
+
+  def rescue_action_in_public
+    request.reraise_stale_object_errors(exception)
+    
+    # normal exception stuff, hoptoad etc.
+  end
+  
+If needed, you can inspect the request object to determine how many times the current action has been attempted or to find out if this is the last attempt.
+
+  request.attempt         # => 3
+  request.last_attempt?   # => false
+
+A great use of request.attempt is to disable your caching library after a request has failed.
+
+  before_filter :cache_setup
+  def cache_setup
+    SomeCacheLibrary.enable = request.attempt == 1
+  end
+  
+
+== Install
+
+As a Rails plugin.
+
+  ./script/plugin install git://github.com/jqr/stale_object_destroyer.git
+
+Prefer gems? Add this to your environment.rb and run the following command.
+
+  config.gem 'jqr-stale_object_destroyer', :lib => 'stale_object_destroyer', :source => 'http://gems.github.com'
+
+  $ rake gems:install
+
+
+Homepage:: http://github.com/jqr/versionable/tree/master  
+License:: Copyright (c) 2008 Elijah Miller <mailto:elijah.miller@gmail.com> and Kristopher Chambers <mailto:kristopher.chambers@gmail.com, released under the MIT license.
