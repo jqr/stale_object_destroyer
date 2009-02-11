@@ -12,8 +12,11 @@ So how do you handle ActiveRecord::StaleObjectError? Rails documentation has thi
 
 In most applications, you simply need to retry the thing that failed and make sure you don't use any stale values when trying again. That last bit can prove rather tricky with the numerous caching techniques employed in high performance Rails applications.
 
-Stale Object Destroyer provides an easy way for you to start the entire request over to ensure no stale objects will be operated on. It handles this entirely inside of Rails though, so no additional client requests will be made. As far as your code will know, the user just retried the request a few times in hopes of success.
+Stale Object Destroyer provides an easy way for you to start the entire request over to ensure no stale objects will be operated on. It handles this entirely inside of Rails though, so no additional client requests will be made. 
 
+As far as your code knows, the user just retried the request a few times in hopes of success.
+
+As far as your user knows, your site did nothing out of the ordinary.
 
 == Examples
 
