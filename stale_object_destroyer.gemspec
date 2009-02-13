@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{stale_object_destroyer}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Elijah Miller"]
-  s.date = %q{2009-02-11}
+  s.date = %q{2009-02-13}
   s.description = %q{An easy way to handle stale object errors in Rails by retrying the entire request.}
   s.email = %q{elijah.miller@gmail.com}
   s.extra_rdoc_files = ["CHANGELOG", "lib/stale_object_destroyer.rb", "README.rdoc"]

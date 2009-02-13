@@ -1,1 +1,3 @@
+v0.0.2. Added after_stale_object_error callback and per-controller setting of retry-attempts.
+
 v0.0.1. Initial extraction.

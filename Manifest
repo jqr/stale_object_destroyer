@@ -5,3 +5,4 @@ Manifest
 Rakefile
 README.rdoc
 spec/spec_helper.rb
+stale_object_destroyer.gemspec
