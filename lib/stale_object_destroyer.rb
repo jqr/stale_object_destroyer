@@ -1,16 +1,22 @@
-class ActionController::CgiRequest
-  attr_accessor :attempt, :last_attempt
+module StaleObjectDestroyer
+  module Request
+    attr_accessor :attempt, :last_attempt
   
-  def last_attempt?
-    last_attempt
-  end
+    def last_attempt?
+      last_attempt
+    end
   
-  def reraise_stale_object_errors(exception)
-    if exception.is_a?(ActiveRecord::StaleObjectError) && !last_attempt?
-      raise exception
+    def reraise_stale_object_errors(exception)
+      if exception.is_a?(ActiveRecord::StaleObjectError) && !last_attempt?
+        raise exception
+      end
     end
   end
 end
+
+ActionController::CgiRequest.send :include, StaleObjectDestroyer::Request
+# Needed for cucumber
+ActionController::RackRequest.send :include, StaleObjectDestroyer::Request
 
 class ActionController::Base
   class << self 
