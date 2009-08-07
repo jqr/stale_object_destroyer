@@ -18,11 +18,21 @@ As far as your code knows, the user just retried the request a few times in hope
 
 As far as your user knows, your site did nothing out of the ordinary.
 
+By default the request will be attempted 3 times. You can override this on
+a controller basis by defining a class method on the controller that returns
+an integer for retry_attempts.
+
+class ApplicationController < ActionController::Base
+  def self.retry_attempts
+    5
+  end
+end
+
 == Examples
 
 Stale Object Destroyer works by handling StaleObjectErrors at a much higher level in the request cycle so you will need to let them pass through your exception notification code.
 
-  def rescue_action_in_public
+  def rescue_action_in_public(exception)
     request.reraise_stale_object_errors(exception)
     
     # normal exception stuff, hoptoad etc.

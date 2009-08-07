@@ -37,7 +37,7 @@ class ActionController::Base
 
    # TODO: evaluate possibility of moving this to an instnace method
    def retry_attempts
-     1
+     3
    end
  end
  
