@@ -32,12 +32,12 @@ end
 
 Stale Object Destroyer works by handling StaleObjectErrors at a much higher level in the request cycle so you will need to let them pass through your exception notification code.
 
-  def rescue_action_in_public(exception)
+  def rescue_action_with_stale_object_reraise(exception)
     request.reraise_stale_object_errors(exception)
-    
-    # normal exception stuff, hoptoad etc.
+    rescue_action_without_stale_object_reraise(exception)
   end
-  
+  alias_method_chain :rescue_action, :stale_object_reraise
+
 If needed, you can inspect the request object to determine how many times the current action has been attempted or to find out if this is the last attempt.
 
   request.attempt         # => 3
