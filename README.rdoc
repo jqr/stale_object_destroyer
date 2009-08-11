@@ -50,6 +50,11 @@ A great use of request.attempt is to disable your caching library after a reques
     SomeCacheLibrary.enable = request.attempt == 1
   end
   
+If you need to call something on the stale object when the error is encountered there is an after_stale_object_error callback you can use. Typically this is used to guarantee cache expiry in this event.
+
+  class User < ActiveRecord::Base
+    after_stale_object_error :expire_cache
+  end
 
 == Install
 
